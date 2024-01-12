@@ -1,0 +1,35 @@
+<ul id="flash-messages-list" class="absolute top-5 left-1/2 -translate-x-1/2 flex flex-col gap-y-5 text-black-1">
+  <% flash.each do |type, msg| %>
+    <li
+    data-controller="notification"
+    data-notification-hidden-value="<%= local_assigns[:auto_dismiss].blank? %>"
+    data-notification-delay-value="<%= local_assigns[:auto_dismiss]&.dig(:delay) %>"
+    data-transition-enter-from="opacity-0 translate-x-6"
+    data-transition-enter-to="opacity-100 translate-x-0"
+    data-transition-leave-from="opacity-100 translate-x-0"
+    data-transition-leave-to="opacity-0 translate-x-6"
+    class="relative p-6 rounded-lg transition transform duration-500 shadow-md">
+      <div class="flex items-center">
+        <span>
+          <%= render "flash_messages/icon", flash_type: type %>
+        </span>
+
+        <p class="ml-2 mr-10 font-medium"><%= msg %></p>
+
+        <button type="button" data-action="click->notification#hide">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#6c757d" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <% if local_assigns[:redirect] %>
+        <%= link_to(
+          local_assigns[:redirect][:copy],
+          local_assigns[:redirect][:path],
+          class: "block w-fit pt-0.5 pb-1 px-2.5 rounded-lg mt-5 ml-auto text-sm bg-blue-1 text-white"
+        ) %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
